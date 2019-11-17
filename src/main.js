@@ -1,5 +1,6 @@
 import Vue from 'vue';
 import Notifications from 'vue-notification';
+import './firebase';
 
 import App from './App';
 import router from './router';

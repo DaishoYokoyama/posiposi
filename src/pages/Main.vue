@@ -1,11 +1,6 @@
 <template>
   <div class="main">
-    <section
-      class="side-menu"
-      :class="{
-        'is-close': isSideMenuClosed,
-      }"
-    >
+    <section class="side-menu" :class="{ 'is-close': isSideMenuClosed }">
       <template v-if="!isSideMenuClosed">
         <router-link class="menu-item" active-class="is-active" tag="button" :to="{ name: 'pos' }">
           POS

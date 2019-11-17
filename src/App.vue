@@ -2,12 +2,23 @@
   <div id="app">
     <router-view />
     <notifications group="default" position="top center" :style="{ margin: '10px' }" />
+    <Loader v-if="isLoading" />
   </div>
 </template>
 
 <script>
+import { mapGetters } from 'vuex';
+import Loader from '@/components/Loader';
+
 export default {
-  name: 'app',
+  components: {
+    Loader,
+  },
+  computed: {
+    ...mapGetters({
+      isLoading: 'isLoading',
+    }),
+  },
 };
 </script>
 

@@ -13,7 +13,7 @@ const routes = [
     children: [
       {
         name: 'pos',
-        path: 'pos:roomId?',
+        path: 'pos/:roomId?',
         component: Pos,
         props: true,
       },

@@ -1,7 +1,7 @@
 <template>
   <div class="pos">
     <template v-if="roomId === null">
-      <button class="create-room-button">
+      <button class="create-room-button" @click.stop="onCreateRoomButtonClick">
         <AddIcon class="add-icon" />
         <span>新しく部屋を作る</span>
       </button>
@@ -19,6 +19,10 @@
 </template>
 
 <script>
+import { mapActions } from 'vuex';
+import uuidv4 from 'uuid/v4';
+
+import { createRoom, isExistsRoom } from '@/api/firestore';
 import { copyToClipboard } from '@/util';
 
 import CopyIcon from '@/assets/images/copy-icon.svg';
@@ -36,6 +40,10 @@ export default {
     AddIcon,
   },
   methods: {
+    ...mapActions({
+      showLoading: 'showLoading',
+      hideLoading: 'hideLoading',
+    }),
     onCopyButtonClick() {
       const copyResult = copyToClipboard(location.href);
       if (copyResult) {
@@ -52,11 +60,31 @@ export default {
         });
       }
     },
+    async onCreateRoomButtonClick() {
+      const roomId = uuidv4();
+
+      this.showLoading();
+      await createRoom(roomId);
+      this.hideLoading();
+      this.$router.push({ name: 'pos', params: { roomId } });
+    },
   },
-  beforeRouteEnter(to, from, next) {
+  async beforeRouteEnter(to, from, next) {
+    if (to.params.roomId) {
+      const isExists = await isExistsRoom(to.params.roomId);
+      if (isExists) {
+        // load
+      }
+    }
     next();
   },
-  beforeRouteUpdate(to, from, next) {
+  async beforeRouteUpdate(to, from, next) {
+    if (to.params.roomId) {
+      const isExists = await isExistsRoom(to.params.roomId);
+      if (isExists) {
+        // load
+      }
+    }
     next();
   },
 };
