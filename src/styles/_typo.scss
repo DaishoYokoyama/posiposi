@@ -1,0 +1,22 @@
+@font-face {
+  font-family: 'Noto Sans JP';
+  src: url('~@/assets/fonts/Noto_Sans_JP/NotoSansJP-Medium.otf')
+    format('opentype');
+  font-weight: 400;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Noto Sans JP';
+  src: url('~@/assets/fonts/Noto_Sans_JP/NotoSansJP-Light.otf')
+    format('opentype');
+  font-weight: 300;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Roboto';
+  src: url('~@/assets/fonts/Roboto/Roboto-Medium.ttf') format('truetype');
+  font-weight: 400;
+  font-display: swap;
+}

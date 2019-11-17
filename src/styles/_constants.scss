@@ -1,0 +1,34 @@
+$font-size-x-small: 11px;
+$font-size-small: 14px;
+$font-size-regular: 16px;
+$font-size-large: 24px;
+$font-size-x-large: 32px;
+
+$base-color: #fefefe;
+$sub-color: #1b1b1b;
+
+$font-color-normal: #1f1f1f;
+$font-color-active: #4c7ee8;
+
+$border-color-normal: #dddddd;
+$border-color-active: #4c7ee8;
+
+$transition-fast: all 0.1s ease-out;
+$transition-normal: all 0.2s ease-out;
+
+$box-shadow-normal: 0 3px 6px rgba(#000, 0.16);
+$box-shadow-strong: 0 1px 3px rgba(#000, 0.3);
+
+%empty-button {
+  cursor: pointer;
+  border: none;
+  padding: 0;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  &:focus {
+    outline: none;
+  }
+}
