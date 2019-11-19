@@ -1,5 +1,6 @@
-import LoaderModal from '.';
 import { withKnobs, color, number } from '@storybook/addon-knobs';
+
+import LoaderModal from '.';
 
 export default {
   title: 'components/LoaderModal',
@@ -23,6 +24,6 @@ export const basic = () => {
       },
     },
     components: { LoaderModal },
-    template: '<LoaderModal :color="color" :width="width" :height="height" />',
+    template: '<LoaderModal v-bind="$props" />',
   };
 };
