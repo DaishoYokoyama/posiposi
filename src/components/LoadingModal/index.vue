@@ -1,7 +1,10 @@
 <template>
   <transition name="fade">
     <div class="overlay">
-      <ScaleLoader loading="loading" color="#4c7ee8" width="30" height="30" />
+      <ScaleLoader loading="loading"
+                   :color="color"
+                   :width="`${width}px`"
+                   :height="`${height}px`" />
     </div>
   </transition>
 </template>
@@ -10,6 +13,20 @@
 import ScaleLoader from 'vue-spinner/src/ScaleLoader';
 
 export default {
+  props: {
+    color: {
+      type: String,
+      default: '#4c7ee8',
+    },
+    width: {
+      type: Number,
+      default: 5,
+    },
+    height: {
+      type: Number,
+      default: 25,
+    },
+  },
   components: {
     ScaleLoader,
   },
