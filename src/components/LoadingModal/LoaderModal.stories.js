@@ -2,7 +2,7 @@ import LoaderModal from '.';
 import { withKnobs, color, number } from '@storybook/addon-knobs';
 
 export default {
-  title: 'Loader',
+  title: 'components/LoaderModal',
   decorators: [withKnobs],
 };
 
