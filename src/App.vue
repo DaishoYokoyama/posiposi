@@ -1,18 +1,20 @@
 <template>
   <div id="app">
     <router-view />
-    <notifications group="default" position="top center" :style="{ margin: '10px' }" />
-    <Loader v-if="isLoading" />
+    <notifications group="default"
+                   position="top center"
+                   :style="{ margin: '10px' }" />
+    <LoadingModal v-if="isLoading" />
   </div>
 </template>
 
 <script>
 import { mapGetters } from 'vuex';
-import Loader from '@/components/Loader';
+import LoadingModal from '@/components/LoadingModal';
 
 export default {
   components: {
-    Loader,
+    LoadingModal,
   },
   computed: {
     ...mapGetters({

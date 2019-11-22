@@ -1,26 +1,42 @@
 const types = {
-  ADD_OBJECTS: 'ADD_OBJECTS',
-  UPDATE_OBJECTS: 'UPDATE_OBJECTS',
-  REMOVE_OBJECTS: 'REMOVE_OBJECTS',
+  INIT_ROOM: 'INIT_ROOM',
+  ADD_ROOM_OBJECTS: 'ADD_ROOM_OBJECTS',
+  UPDATE_ROOM_OBJECTS: 'UPDATE_ROOM_OBJECTS',
+  REMOVE_ROOM_OBJECTS: 'REMOVE_ROOM_OBJECTS',
 };
 
 export default {
   namespaced: true,
   state: {
-    objescts: [],
+    roomObjects: [],
   },
-  getters: {},
-  actions: {},
+  getters: {
+    roomObjects: state => state.roomObjects,
+  },
+  actions: {
+    addRoomObjects({ commit }, { roomObjects }) {
+      commit(types.ADD_ROOM_OBJECTS, { roomObjects });
+    },
+    updateRoomObjects({ commit }, { roomObjects }) {
+      commit(types.UPDATE_ROOM_OBJECTS, { roomObjects });
+    },
+    removeRoomObjects({ commit }, { ids }) {
+      commit(types.REMOVE_ROOM_OBJECTS, { ids });
+    },
+  },
   mutations: {
-    [types.ADD_OBJECTS](state, { objects }) {
-      state.objects = [...state.objects, ...objects];
+    [types.INIT_ROOM](state) {
+      state.roomObjects = [];
     },
-    [types.UPDATE_OBJECTS](state, { objects }) {
-      const objectIds = objects.map('id');
-      state.objects = [...state.objects.filter(obj => !objectIds.includes(obj.id)), ...objects];
+    [types.ADD_ROOM_OBJECTS](state, { roomObjects }) {
+      state.roomObjects = [...state.roomObjects, ...roomObjects];
     },
-    [types.REMOVE_OBJECTS](state, { objectIds }) {
-      state.objects = [...state.objects.filter(obj => !objectIds.includes(obj.id))];
+    [types.UPDATE_ROOM_OBJECTS](state, { roomObjects }) {
+      const ids = roomObjects.map(x => x.id);
+      state.roomObjects = [...state.roomObjects.filter(obj => !ids.includes(obj.id)), ...roomObjects];
+    },
+    [types.REMOVE_ROOM_OBJECTS](state, { ids }) {
+      state.roomObjects = [...state.roomObjects.filter(obj => !ids.includes(obj.id))];
     },
   },
 };

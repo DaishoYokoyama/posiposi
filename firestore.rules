@@ -4,7 +4,7 @@ service cloud.firestore {
       allow read, write;
     }
   }
-  match /databases/{database}/documents/rooms/{document}/objects {
+  match /databases/{database}/documents/roomObjects {
     match /{document=**} {
       allow read, write;
     }
