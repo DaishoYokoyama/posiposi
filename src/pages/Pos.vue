@@ -9,6 +9,10 @@
     </template>
 
     <template v-else>
+      <div class="viewport">
+        <svg class="field">
+        </svg>
+      </div>
       <section class="room-info">
         <h2 class="room-id">{{ `RoomID: ${roomId}` }}</h2>
         <button class="copy-button"
@@ -121,8 +125,6 @@ export default {
     const fromRoomId = from.params.roomId;
     const toRoomId = to.params.roomId;
 
-    console.log(fromRoomId, toRoomId);
-
     if (toRoomId && fromRoomId !== toRoomId) {
       const isExists = await isExistsRoom(to.params.roomId);
       if (isExists) {
@@ -150,11 +152,31 @@ export default {
 .pos {
   width: 100%;
   height: 100%;
+  overflow: hidden;
 
   position: relative;
   display: flex;
   align-items: center;
   justify-content: center;
+
+  .viewport {
+    width: 100%;
+    height: 100%;
+    padding: 30px;
+    overflow: scroll;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    .field {
+      width: 800px;
+      height: 800px;
+      border: 1px solid #ddd;
+      border-radius: 50%;
+      box-shadow: 0 2px 6px rgba(#000, 0.16);
+    }
+  }
 
   .room-info {
     width: auto;
