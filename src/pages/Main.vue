@@ -1,19 +1,21 @@
 <template>
   <div class="main">
-    <section class="side-menu" :class="{ 'is-close': isSideMenuClosed }">
+    <section class="side-menu"
+             :class="{ 'is-close': isSideMenuClosed }">
       <template v-if="!isSideMenuClosed">
-        <router-link class="menu-item" active-class="is-active" tag="button" :to="{ name: 'pos' }">
+        <router-link class="menu-item"
+                     active-class="is-active"
+                     tag="button"
+                     :to="{ name: 'pos' }">
           POS
         </router-link>
       </template>
-      <button class="knob" @click.stop="isSideMenuClosed = !isSideMenuClosed">
-        <span
-          class="text"
-          :class="{
+      <button class="knob"
+              @click.stop="isSideMenuClosed = !isSideMenuClosed">
+        <span class="text"
+              :class="{
             'is-turn': isSideMenuClosed,
-          }"
-          >＜</span
-        >
+          }">＜</span>
       </button>
     </section>
     <router-view class="content" />
@@ -85,8 +87,10 @@ export default {
       @extend %empty-button;
       width: 20px;
       height: 50px;
+
       font-weight: bold;
       background: $sub-color;
+      border-radius: 0 5px 5px 0;
 
       position: absolute;
       bottom: 10px;
