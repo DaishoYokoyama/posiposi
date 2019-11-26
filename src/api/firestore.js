@@ -4,13 +4,21 @@ const firestore = firebase.firestore();
 const rooms = firestore.collection('rooms');
 const objects = firestore.collection('roomObjects');
 
+// TODO 然るべき場所に移動
+const defaultFieldWidth = 800;
+const defaultFieldHeight = 800;
+
 export async function createRoom(roomId) {
-  return rooms.doc(roomId).set({ roomId });
+  return rooms.doc(roomId).set({
+    roomId,
+    fieldWidth: defaultFieldWidth,
+    fieldHeight: defaultFieldHeight,
+  });
 }
 
-export async function isExistsRoom(roomId) {
+export async function getRoomInfo(roomId) {
   const doc = await rooms.doc(roomId).get();
-  return doc.exists;
+  return doc.exists ? doc.data() : null;
 }
 
 export async function getRoomObjectRef(roomId) {
@@ -19,4 +27,6 @@ export async function getRoomObjectRef(roomId) {
 
 export default {
   createRoom,
+  getRoomInfo,
+  getRoomObjectRef,
 };

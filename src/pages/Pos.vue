@@ -10,7 +10,8 @@
 
     <template v-else>
       <div class="viewport">
-        <svg class="field">
+        <svg class="field"
+             :style="{ width: `${fieldWidth}px`, height: `${fieldHeight}px` }">
         </svg>
       </div>
       <section class="room-info">
@@ -25,10 +26,10 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex';
+import { mapActions, mapGetters } from 'vuex';
 import uuidv4 from 'uuid/v4';
 
-import { createRoom, isExistsRoom, getRoomObjectRef } from '@/api/firestore';
+import { createRoom, getRoomInfo, getRoomObjectRef } from '@/api/firestore';
 import { copyToClipboard } from '@/util';
 
 import CopyIcon from '@/assets/images/copy-icon.svg';
@@ -56,6 +57,7 @@ export default {
     ...mapActions({
       showLoading: 'showLoading',
       hideLoading: 'hideLoading',
+      setRoomInfo: 'room/setRoomInfo',
       addRoomObjects: 'room/addRoomObjects',
       updateRoomObjects: 'room/updateRoomObjects',
       removeRoomObjects: 'room/removeRoomObjects',
@@ -103,6 +105,12 @@ export default {
       });
     },
   },
+  computed: {
+    ...mapGetters({
+      fieldWidth: 'room/fieldWidth',
+      fieldHeight: 'room/fieldHeight',
+    }),
+  },
   async beforeRouteEnter(to, from, next) {
     if (!to.params.roomId) {
       next();
@@ -110,9 +118,10 @@ export default {
     }
 
     if (to.params.roomId) {
-      const isExists = await isExistsRoom(to.params.roomId);
-      if (isExists) {
+      const roomInfo = await getRoomInfo(to.params.roomId);
+      if (roomInfo) {
         next(vm => {
+          vm.setRoomInfo({ roomInfo });
           vm.setRoomObjectListener(to.params.roomId);
         });
         return;
@@ -126,9 +135,12 @@ export default {
     const toRoomId = to.params.roomId;
 
     if (toRoomId && fromRoomId !== toRoomId) {
-      const isExists = await isExistsRoom(to.params.roomId);
-      if (isExists) {
-        this.setRoomObjectListener(to.params.roomId);
+      const roomInfo = await getRoomInfo(to.params.roomId);
+      if (roomInfo) {
+        next(vm => {
+          vm.setRoomInfo({ roomInfo });
+          vm.setRoomObjectListener(to.params.roomId);
+        });
       }
     } else {
       if (this.listener.roomObjects) {
@@ -150,11 +162,11 @@ export default {
 
 <style lang="scss" scoped>
 .pos {
+  position: relative;
   width: 100%;
   height: 100%;
   overflow: hidden;
 
-  position: relative;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -170,8 +182,7 @@ export default {
     justify-content: center;
 
     .field {
-      width: 800px;
-      height: 800px;
+      position: relative;
       border: 1px solid #ddd;
       border-radius: 50%;
       box-shadow: 0 2px 6px rgba(#000, 0.16);
