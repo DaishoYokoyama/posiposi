@@ -10,9 +10,16 @@
 
     <template v-else>
       <div class="viewport">
-        <svg class="field"
-             :style="{ width: `${fieldWidth}px`, height: `${fieldHeight}px` }">
-        </svg>
+        <div class="field"
+             :style="{ width: `${fieldWidth}px`, height: `${fieldHeight}px` }"
+             @click.stop="onFieldClick($event)">
+          <CircleObject v-for="playerObject in playerObjects"
+                        :key="playerObject.objectId"
+                        :x="playerObject.x"
+                        :y="playerObject.y"
+                        :size="playerObject.size"
+                        :color="roleToColor(playerObject.role)" />
+        </div>
       </div>
       <section class="room-info">
         <h2 class="room-id">{{ `RoomID: ${roomId}` }}</h2>
@@ -29,8 +36,10 @@
 import { mapActions, mapGetters } from 'vuex';
 import uuidv4 from 'uuid/v4';
 
-import { createRoom, getRoomInfo, getRoomObjectRef } from '@/api/firestore';
-import { copyToClipboard } from '@/util';
+import { copyToClipboard, roleToColor } from '@/util';
+import { createRoom, getRoomInfo, createRoomObject, getRoomObjectRef } from '@/api/firestore';
+
+import CircleObject from '@/components/CircleObject';
 
 import CopyIcon from '@/assets/images/copy-icon.svg';
 import AddIcon from '@/assets/images/add-icon.svg';
@@ -50,13 +59,16 @@ export default {
     },
   },
   components: {
+    CircleObject,
     CopyIcon,
     AddIcon,
   },
   methods: {
+    roleToColor,
     ...mapActions({
       showLoading: 'showLoading',
       hideLoading: 'hideLoading',
+      initRoom: 'room/init',
       setRoomInfo: 'room/setRoomInfo',
       addRoomObjects: 'room/addRoomObjects',
       updateRoomObjects: 'room/updateRoomObjects',
@@ -96,19 +108,34 @@ export default {
 
       this.listener.roomObject = roomObject.onSnapshot(snapshot => {
         const changes = snapshot.docChanges();
-        const adds = changes.filter(x => x.type === 'added');
-        const modifieds = changes.filter(x => x.type === 'modified');
-        const removes = changes.filter(x => x.type === 'removed');
+        const adds = changes.filter(x => x.type === 'added').map(x => x.doc.data());
+        const modifieds = changes.filter(x => x.type === 'modified').map(x => x.doc.data());
+        const removes = changes.filter(x => x.type === 'removed').map(x => x.doc.data());
+        console.log(adds, modifieds, removes);
         if (adds.length > 0) this.addRoomObjects({ roomObjects: adds });
         if (modifieds.length > 0) this.updateRoomObjects({ roomObjects: modifieds });
         if (removes.length > 0) this.removeRoomObjects({ ids: removes.map(x => x.id) });
       });
+    },
+    async onFieldClick(e) {
+      const playerObject = {
+        objectId: uuidv4(),
+        type: 'player',
+        roomId: this.roomId,
+        size: 100,
+        x: e.offsetX,
+        y: e.offsetY,
+        role: 'dps',
+      };
+
+      await createRoomObject(playerObject);
     },
   },
   computed: {
     ...mapGetters({
       fieldWidth: 'room/fieldWidth',
       fieldHeight: 'room/fieldHeight',
+      playerObjects: 'room/playerObjects',
     }),
   },
   async beforeRouteEnter(to, from, next) {
@@ -147,6 +174,7 @@ export default {
         this.listener.roomObjects();
         this.listener.roomObjects = null;
       }
+      this.initRoom();
     }
     next();
   },
@@ -174,7 +202,6 @@ export default {
   .viewport {
     width: 100%;
     height: 100%;
-    padding: 30px;
     overflow: scroll;
 
     display: flex;

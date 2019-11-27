@@ -1,3 +1,5 @@
+import _ from 'lodash';
+
 const types = {
   INIT_ROOM: 'INIT_ROOM',
   SET_ROOM_INFO: 'SET_ROOM_INFO',
@@ -16,8 +18,12 @@ export default {
     fieldWidth: state => (state.roomInfo === null ? 0 : state.roomInfo.fieldWidth),
     fieldHeight: state => (state.roomInfo === null ? 0 : state.roomInfo.fieldHeight),
     roomObjects: state => state.roomObjects,
+    playerObjects: state => _.filter(state.roomObjects, x => x.type === 'player'),
   },
   actions: {
+    init({ commit }) {
+      commit(types.INIT_ROOM);
+    },
     setRoomInfo({ commit }, { roomInfo }) {
       commit(types.SET_ROOM_INFO, { roomInfo });
     },

@@ -2,7 +2,7 @@ import firebase from 'firebase/app';
 const firestore = firebase.firestore();
 
 const rooms = firestore.collection('rooms');
-const objects = firestore.collection('roomObjects');
+const roomObjects = firestore.collection('roomObjects');
 
 // TODO 然るべき場所に移動
 const defaultFieldWidth = 800;
@@ -22,7 +22,11 @@ export async function getRoomInfo(roomId) {
 }
 
 export async function getRoomObjectRef(roomId) {
-  return objects.where('roomId', '==', roomId);
+  return roomObjects.where('roomId', '==', roomId);
+}
+
+export async function createRoomObject(object) {
+  return roomObjects.doc(object.objectId).set(object);
 }
 
 export default {

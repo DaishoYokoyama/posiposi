@@ -18,6 +18,23 @@ export function copyToClipboard(text) {
   return copyResult;
 }
 
+/**
+ * role name to hex color code.
+ * @param {string} role
+ */
+export function roleToColor(role) {
+  switch (role) {
+    case 'dps':
+      return '#832528';
+    case 'tank':
+      return '#3C4FD8';
+    case 'healer':
+      return '#318413';
+    default:
+      return '#343434';
+  }
+}
+
 export default {
   copyToClipboard,
 };
