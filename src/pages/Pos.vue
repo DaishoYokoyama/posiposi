@@ -111,7 +111,6 @@ export default {
         const adds = changes.filter(x => x.type === 'added').map(x => x.doc.data());
         const modifieds = changes.filter(x => x.type === 'modified').map(x => x.doc.data());
         const removes = changes.filter(x => x.type === 'removed').map(x => x.doc.data());
-        console.log(adds, modifieds, removes);
         if (adds.length > 0) this.addRoomObjects({ roomObjects: adds });
         if (modifieds.length > 0) this.updateRoomObjects({ roomObjects: modifieds });
         if (removes.length > 0) this.removeRoomObjects({ ids: removes.map(x => x.id) });
@@ -179,7 +178,6 @@ export default {
     next();
   },
   beforeRouteLeave(to, from, next) {
-    console.log('leave');
     if (this.listener.roomObject) {
       this.listener.roomObject.unscribe();
     }
