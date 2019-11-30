@@ -5,9 +5,6 @@
 </template>
 
 <script>
-// TODO performance  fix
-// change functional component.
-
 export default {
   props: {
     size: {
@@ -45,5 +42,6 @@ export default {
 <style lang="scss" scoped>
 .circle-object {
   border-radius: 50%;
+  box-shadow: 0 1px 3px rgba(#000, 0.3);
 }
 </style>
