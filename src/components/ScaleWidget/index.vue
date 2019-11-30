@@ -75,7 +75,7 @@ export default {
     align-items: center;
     justify-content: center;
 
-    transition: background-color 0.15s ease-out;
+    transition: background-color 0.15s ease-out, color 0.15s ease-out;
 
     &:hover:not(:disabled) {
       cursor: pointer;
