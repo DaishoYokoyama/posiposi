@@ -7,7 +7,11 @@
 <script>
 export default {
   props: {
-    size: {
+    width: {
+      type: Number,
+      required: true,
+    },
+    height: {
       type: Number,
       required: true,
     },
@@ -30,8 +34,8 @@ export default {
         position: 'absolute',
         left: `${this.x}px`,
         top: `${this.y}px`,
-        width: `${this.size}px`,
-        height: `${this.size}px`,
+        width: `${this.width}px`,
+        height: `${this.height}px`,
         background: this.color,
       };
     },
