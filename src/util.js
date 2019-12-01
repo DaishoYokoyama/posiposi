@@ -35,6 +35,20 @@ export function roleToColor(role) {
   }
 }
 
-export default {
-  copyToClipboard,
-};
+/**
+ * scale up (*1.3)
+ * @param {*} scale
+ * @param {*} maxScale
+ */
+export function upScale(scale, maxScale) {
+  return Math.min(maxScale, scale * 1.3);
+}
+
+/**
+ * scale down (/1.3)
+ * @param {*} scale
+ * @param {*} minScale
+ */
+export function downScale(scale, minScale) {
+  return Math.max(minScale, scale / 1.3);
+}

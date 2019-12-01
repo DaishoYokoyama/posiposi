@@ -1,4 +1,5 @@
 import _ from 'lodash';
+import * as util from '@/util';
 
 const types = {
   INIT_ROOM: 'INIT_ROOM',
@@ -6,6 +7,7 @@ const types = {
   ADD_ROOM_OBJECTS: 'ADD_ROOM_OBJECTS',
   UPDATE_ROOM_OBJECTS: 'UPDATE_ROOM_OBJECTS',
   REMOVE_ROOM_OBJECTS: 'REMOVE_ROOM_OBJECTS',
+  SET_SCALE: 'SET_SCALE',
 };
 
 export default {
@@ -13,12 +15,18 @@ export default {
   state: {
     roomInfo: null,
     roomObjects: [],
+    scale: 1.0,
+    minScale: 0.1,
+    maxScale: 2.0,
   },
   getters: {
-    fieldWidth: state => (state.roomInfo === null ? 0 : state.roomInfo.fieldWidth),
-    fieldHeight: state => (state.roomInfo === null ? 0 : state.roomInfo.fieldHeight),
+    fieldWidth: state => (state.roomInfo === null ? 0 : state.roomInfo.width),
+    fieldHeight: state => (state.roomInfo === null ? 0 : state.roomInfo.height),
     roomObjects: state => state.roomObjects,
     playerObjects: state => _.filter(state.roomObjects, x => x.type === 'player'),
+    scale: state => state.scale,
+    canUpScale: state => state.scale < state.maxScale,
+    canDownScale: state => state.scale > state.minScale,
   },
   actions: {
     init({ commit }) {
@@ -35,6 +43,17 @@ export default {
     },
     removeRoomObjects({ commit }, { ids }) {
       commit(types.REMOVE_ROOM_OBJECTS, { ids });
+    },
+    upScale({ commit, state }) {
+      const { scale, maxScale } = state;
+      commit(types.SET_SCALE, { scale: util.upScale(scale, maxScale) });
+    },
+    downScale({ commit, state }) {
+      const { scale, minScale } = state;
+      commit(types.SET_SCALE, { scale: util.downScale(scale, minScale) });
+    },
+    resetScale({ commit }) {
+      commit(types.SET_SCALE, { scale: 1.0 });
     },
   },
   mutations: {
@@ -54,6 +73,9 @@ export default {
     },
     [types.REMOVE_ROOM_OBJECTS](state, { ids }) {
       state.roomObjects = [...state.roomObjects.filter(obj => !ids.includes(obj.id))];
+    },
+    [types.SET_SCALE](state, { scale }) {
+      state.scale = scale;
     },
   },
 };

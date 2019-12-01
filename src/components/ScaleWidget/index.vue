@@ -16,30 +16,22 @@
 <script>
 export default {
   props: {
-    minScale: {
-      type: Number,
-      default: 0.1,
-    },
-    maxScale: {
-      type: Number,
-      default: 2.0,
-    },
     scale: {
       type: Number,
       required: true,
     },
-  },
-  computed: {
-    canMinus() {
-      return this.scale > this.minScale;
+    canPlus: {
+      type: Boolean,
+      default: true,
     },
-    canPlus() {
-      return this.scale < this.maxScale;
+    canMinus: {
+      type: Boolean,
+      default: true,
     },
   },
   filters: {
     toPer(val) {
-      return `${val * 100} %`;
+      return `${Math.floor(val * 100)} %`;
     },
   },
 };
@@ -91,7 +83,8 @@ export default {
     flex: 1 1 auto;
 
     cursor: pointer;
-    font-size: 20px;
+    font-size: 16px;
+    font-weight: 300;
 
     display: flex;
     align-items: center;
